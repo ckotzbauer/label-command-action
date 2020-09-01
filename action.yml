@@ -1,0 +1,13 @@
+name: 'Label Command'
+description: 'Label Issues and PRs with commands'
+inputs:
+  token:
+    description: 'GITHUB_TOKEN or a repo scoped PAT.'
+    default: ${{ github.token }}
+    required: true
+runs:
+  using: 'node12'
+  main: 'dist/index.js'
+branding:
+  icon: 'search'  
+  color: 'gray-dark'
