@@ -482,6 +482,38 @@ exports.debug = debug; // for test
 
 /***/ }),
 
+/***/ 185:
+/***/ (function(__unusedmodule, exports) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.extractCommands = void 0;
+exports.extractCommands = (body, config) => {
+    const exp = /^\/(?<command>[A-Za-z-]+) ?(?<arg>[A-Za-z-]*)$/;
+    const commandWords = config.map((c) => c.command);
+    return body.split("\r\n")
+        .map((line) => {
+        var _a, _b;
+        const match = line.match(exp);
+        if (!match) {
+            return null;
+        }
+        const command = (_a = match.groups) === null || _a === void 0 ? void 0 : _a.command;
+        const arg = (_b = match.groups) === null || _b === void 0 ? void 0 : _b.arg;
+        const matchedCommand = config
+            .find((c) => c.command === command && (c.arg === arg || new RegExp(c.arg).test(arg)));
+        if (!matchedCommand) {
+            return null;
+        }
+        return { command: matchedCommand.action, arg: matchedCommand.label };
+    })
+        .filter((c) => c);
+};
+
+
+/***/ }),
+
 /***/ 211:
 /***/ (function(module) {
 
@@ -753,43 +785,49 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+const path_1 = __webpack_require__(622);
+const fs_1 = __webpack_require__(747);
 const util_1 = __webpack_require__(669);
 const core = __importStar(__webpack_require__(470));
 const github = __importStar(__webpack_require__(469));
+const extract_commands_1 = __webpack_require__(185);
 function run() {
+    var _a;
     return __awaiter(this, void 0, void 0, function* () {
         try {
             const inputs = {
                 token: core.getInput("token"),
+                configFile: core.getInput("config-file"),
             };
-            core.debug(`Inputs: ${util_1.inspect(inputs)}`);
+            const configUrl = path_1.join(process.env["GITHUB_WORKSPACE"], ".github", inputs.configFile || "labels.json");
+            let config = JSON.parse(fs_1.readFileSync(configUrl).toString());
             const repository = process.env.GITHUB_REPOSITORY;
             const [owner, repo] = repository.split("/");
-            core.debug(`repository: ${repository}`);
+            const body = (_a = github.context.payload.comment) === null || _a === void 0 ? void 0 : _a.body;
+            const commands = extract_commands_1.extractCommands(body, config);
             const octokit = github.getOctokit(inputs.token);
-            core.info(JSON.stringify(github.context));
-            const { data: comments } = yield octokit.issues.listComments({
-                owner: owner,
-                repo: repo,
-                issue_number: 2,
-            });
-            core.info(JSON.stringify(comments));
-            /*const comment = comments.find((comment) => {
-              return (
-                (inputs.commentAuthor
-                  ? comment.user.login === inputs.commentAuthor
-                  : true) &&
-                (inputs.bodyIncludes
-                  ? comment.body.includes(inputs.bodyIncludes)
-                  : true)
-              );
-            });
-        
-            if (comment) {
-              core.setOutput("comment-id", comment.id.toString());
-            } else {
-              core.setOutput("comment-id", "");
-            }*/
+            commands.forEach((c) => __awaiter(this, void 0, void 0, function* () {
+                var _b, _c;
+                if (c.command === "add-label") {
+                    yield octokit.issues.addLabels({
+                        owner,
+                        repo,
+                        issue_number: (_b = github.context.payload.issue) === null || _b === void 0 ? void 0 : _b.number,
+                        labels: [c.arg]
+                    });
+                }
+                else if (c.command === "remove-label") {
+                    yield octokit.issues.removeLabel({
+                        owner,
+                        repo,
+                        issue_number: (_c = github.context.payload.issue) === null || _c === void 0 ? void 0 : _c.number,
+                        name: c.arg
+                    });
+                }
+                else {
+                    core.setFailed(`Invalid action: ${c.command}`);
+                }
+            }));
         }
         catch (error) {
             core.debug(util_1.inspect(error));

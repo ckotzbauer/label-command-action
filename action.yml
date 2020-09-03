@@ -5,6 +5,10 @@ inputs:
     description: 'GITHUB_TOKEN or a repo scoped PAT.'
     default: ${{ github.token }}
     required: true
+  config-file:
+    description: 'Name of config-file. Defaults to label-commands.json.'
+    default: label-commands.json
+    required: false
 runs:
   using: 'node12'
   main: 'dist/index.js'
