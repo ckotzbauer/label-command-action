@@ -505,7 +505,7 @@ exports.extractCommands = (body, config) => {
         if (!matchedCommand) {
             return null;
         }
-        return { command: matchedCommand.action, arg: matchedCommand.label };
+        return { command: matchedCommand.action, arg: matchedCommand.label.replace("$1", arg) };
     })
         .filter((c) => c);
 };
