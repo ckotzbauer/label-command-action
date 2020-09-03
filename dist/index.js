@@ -799,7 +799,8 @@ function run() {
                 token: core.getInput("token"),
                 configFile: core.getInput("config-file"),
             };
-            const configUrl = path_1.join(process.env["GITHUB_WORKSPACE"], ".github", inputs.configFile || "labels.json");
+            const configUrl = path_1.join(process.env["GITHUB_WORKSPACE"], ".github", inputs.configFile || "label-commands.json");
+            core.info(`Config-URL: ${configUrl}`);
             let config = JSON.parse(fs_1.readFileSync(configUrl).toString());
             const repository = process.env.GITHUB_REPOSITORY;
             const [owner, repo] = repository.split("/");
