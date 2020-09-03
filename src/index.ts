@@ -26,7 +26,7 @@ async function run() {
         const [owner, repo] = repository.split("/");
 
         const body = github.context.payload.comment?.body as string;
-        const commands = extractCommands(body, config) as Command[];        
+        const commands = extractCommands(body, config.commands) as Command[];        
         const octokit = github.getOctokit(inputs.token);
 
         commands.forEach(async (c) => {

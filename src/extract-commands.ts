@@ -2,7 +2,6 @@ import { CommandConfig, Command } from "./types";
 
 export const extractCommands = (body: string, config: CommandConfig[]): (Command | null)[] => {
     const exp = /^\/(?<command>[A-Za-z-]+) ?(?<arg>[A-Za-z-]*)$/;
-    const commandWords = config.map((c) => c.command);
 
     return body.split("\r\n")
         .map((line) => {

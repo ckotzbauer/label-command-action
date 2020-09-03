@@ -491,7 +491,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.extractCommands = void 0;
 exports.extractCommands = (body, config) => {
     const exp = /^\/(?<command>[A-Za-z-]+) ?(?<arg>[A-Za-z-]*)$/;
-    const commandWords = config.map((c) => c.command);
     return body.split("\r\n")
         .map((line) => {
         var _a, _b;
@@ -805,7 +804,7 @@ function run() {
             const repository = process.env.GITHUB_REPOSITORY;
             const [owner, repo] = repository.split("/");
             const body = (_a = github.context.payload.comment) === null || _a === void 0 ? void 0 : _a.body;
-            const commands = extract_commands_1.extractCommands(body, config);
+            const commands = extract_commands_1.extractCommands(body, config.commands);
             const octokit = github.getOctokit(inputs.token);
             commands.forEach((c) => __awaiter(this, void 0, void 0, function* () {
                 var _b, _c;
