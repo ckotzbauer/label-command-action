@@ -799,8 +799,8 @@ function run() {
                 configFile: core.getInput("config-file"),
             };
             const configUrl = path_1.join(process.env["GITHUB_WORKSPACE"], ".github", inputs.configFile || "label-commands.json");
-            core.info(`Config-URL: ${configUrl}`);
             let config = JSON.parse(fs_1.readFileSync(configUrl).toString());
+            core.info(`Config: ${JSON.stringify(config)}`);
             const repository = process.env.GITHUB_REPOSITORY;
             const [owner, repo] = repository.split("/");
             const body = (_a = github.context.payload.comment) === null || _a === void 0 ? void 0 : _a.body;

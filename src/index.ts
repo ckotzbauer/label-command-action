@@ -19,8 +19,8 @@ async function run() {
             inputs.configFile || "label-commands.json"
         );
 
-        core.info(`Config-URL: ${configUrl}`);
         let config = JSON.parse(readFileSync(configUrl).toString());
+        core.info(`Config: ${JSON.stringify(config)}`);
 
         const repository: string = process.env.GITHUB_REPOSITORY as string;
         const [owner, repo] = repository.split("/");
