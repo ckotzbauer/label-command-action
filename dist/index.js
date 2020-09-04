@@ -505,7 +505,7 @@ exports.extractCommands = (body, config) => {
         if (!matchedCommand) {
             return null;
         }
-        return { command: matchedCommand.action, arg: matchedCommand.label.replace("$1", arg) };
+        return { command: matchedCommand.action, arg: matchedCommand.label.replace("$1", arg), dispatch: matchedCommand.dispatch };
     })
         .filter((c) => c);
 };
@@ -826,6 +826,14 @@ function run() {
                 }
                 else {
                     core.setFailed(`Invalid action: ${c.command}`);
+                    return;
+                }
+                if (c.dispatch) {
+                    yield octokit.repos.createDispatchEvent({
+                        repo,
+                        owner,
+                        event_type: c.dispatch
+                    });
                 }
             }));
         }

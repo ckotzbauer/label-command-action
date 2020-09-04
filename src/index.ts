@@ -46,6 +46,15 @@ async function run() {
                 });
             } else {
                 core.setFailed(`Invalid action: ${c.command}`);
+                return;
+            }
+
+            if (c.dispatch) {
+                await octokit.repos.createDispatchEvent({
+                    repo,
+                    owner,
+                    event_type: c.dispatch
+                })
             }
         });
     } catch (error) {
