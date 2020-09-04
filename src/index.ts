@@ -30,6 +30,8 @@ async function run() {
         const octokit = github.getOctokit(inputs.token);
 
         commands.forEach(async (c) => {
+            core.info(`Process command: ${JSON.stringify(c)}`);
+
             if (c.command === "add-label") {
                 await octokit.issues.addLabels({
                     owner,

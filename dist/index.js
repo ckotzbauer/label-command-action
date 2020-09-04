@@ -808,6 +808,7 @@ function run() {
             const octokit = github.getOctokit(inputs.token);
             commands.forEach((c) => __awaiter(this, void 0, void 0, function* () {
                 var _b, _c;
+                core.info(`Process command: ${JSON.stringify(c)}`);
                 if (c.command === "add-label") {
                     yield octokit.issues.addLabels({
                         owner,
