@@ -830,11 +830,12 @@ function run() {
                     return;
                 }
                 if (c.dispatch) {
-                    yield octokit.repos.createDispatchEvent({
+                    const re = yield octokit.repos.createDispatchEvent({
                         repo,
                         owner,
                         event_type: c.dispatch
                     });
+                    core.info(`Dispatch response: ${JSON.stringify(re)}`);
                 }
             }));
         }

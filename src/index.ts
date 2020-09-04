@@ -52,11 +52,12 @@ async function run() {
             }
 
             if (c.dispatch) {
-                await octokit.repos.createDispatchEvent({
+                const re = await octokit.repos.createDispatchEvent({
                     repo,
                     owner,
                     event_type: c.dispatch
-                })
+                });
+                core.info(`Dispatch response: ${JSON.stringify(re)}`);
             }
         });
     } catch (error) {
