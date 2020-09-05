@@ -791,29 +791,54 @@ const core = __importStar(__webpack_require__(470));
 const github = __importStar(__webpack_require__(469));
 const extract_commands_1 = __webpack_require__(185);
 function run() {
-    var _a;
+    var _a, _b, _c, _d;
     return __awaiter(this, void 0, void 0, function* () {
         try {
             const inputs = {
                 token: core.getInput("token"),
                 configFile: core.getInput("config-file"),
             };
-            const configUrl = path_1.join(process.env["GITHUB_WORKSPACE"], ".github", inputs.configFile || "label-commands.json");
+            const configUrl = path_1.join(process.env.GITHUB_WORKSPACE, ".github", inputs.configFile || "label-commands.json");
             let config = JSON.parse(fs_1.readFileSync(configUrl).toString());
             core.info(`Config: ${JSON.stringify(config)}`);
+            const allowedUsers = config.allowedUsers || [];
+            const octokit = github.getOctokit(inputs.token);
             const repository = process.env.GITHUB_REPOSITORY;
             const [owner, repo] = repository.split("/");
-            const body = (_a = github.context.payload.comment) === null || _a === void 0 ? void 0 : _a.body;
+            if (!allowedUsers.includes(github.context.actor)) {
+                core.warning(`${github.context.actor} is not allowed to post a command.`);
+                yield octokit.issues.createComment({
+                    owner,
+                    repo,
+                    issue_number: (_a = github.context.payload.issue) === null || _a === void 0 ? void 0 : _a.number,
+                    body: `@${github.context.actor} You are not allowed to post a command.`
+                });
+                return;
+            }
+            const eventName = process.env.GITHUB_EVENT_NAME;
+            let body;
+            if (eventName === "issue_comment") {
+                body = (_b = github.context.payload.comment) === null || _b === void 0 ? void 0 : _b.body;
+            }
+            else if (eventName === "pull_request") {
+                body = (_c = github.context.payload.pull_request) === null || _c === void 0 ? void 0 : _c.body;
+            }
+            else if (eventName === "issues") {
+                body = (_d = github.context.payload.issue) === null || _d === void 0 ? void 0 : _d.body;
+            }
+            else {
+                core.setFailed(`Invalid event: ${eventName}`);
+                return;
+            }
             const commands = extract_commands_1.extractCommands(body, config.commands);
-            const octokit = github.getOctokit(inputs.token);
             commands.forEach((c) => __awaiter(this, void 0, void 0, function* () {
-                var _b, _c;
+                var _e, _f;
                 core.info(`Process command: ${JSON.stringify(c)}`);
                 if (c.command === "add-label") {
                     yield octokit.issues.addLabels({
                         owner,
                         repo,
-                        issue_number: (_b = github.context.payload.issue) === null || _b === void 0 ? void 0 : _b.number,
+                        issue_number: (_e = github.context.payload.issue) === null || _e === void 0 ? void 0 : _e.number,
                         labels: [c.arg]
                     });
                 }
@@ -821,7 +846,7 @@ function run() {
                     yield octokit.issues.removeLabel({
                         owner,
                         repo,
-                        issue_number: (_c = github.context.payload.issue) === null || _c === void 0 ? void 0 : _c.number,
+                        issue_number: (_f = github.context.payload.issue) === null || _f === void 0 ? void 0 : _f.number,
                         name: c.arg
                     });
                 }

@@ -14,20 +14,46 @@ async function run() {
         };
 
         const configUrl = join(
-            process.env["GITHUB_WORKSPACE"] as string,
+            process.env.GITHUB_WORKSPACE as string,
             ".github",
             inputs.configFile || "label-commands.json"
         );
 
         let config = JSON.parse(readFileSync(configUrl).toString());
         core.info(`Config: ${JSON.stringify(config)}`);
+        const allowedUsers = config.allowedUsers as string[] || [];
 
+        const octokit = github.getOctokit(inputs.token);
         const repository: string = process.env.GITHUB_REPOSITORY as string;
         const [owner, repo] = repository.split("/");
 
-        const body = github.context.payload.comment?.body as string;
+        if (!allowedUsers.includes(github.context.actor)) {
+            core.warning(`${github.context.actor} is not allowed to post a command.`);
+            await octokit.issues.createComment({
+                owner,
+                repo,
+                issue_number: github.context.payload.issue?.number as number,
+                body: `@${github.context.actor} You are not allowed to post a command.`
+            });
+
+            return;
+        }
+
+        const eventName = process.env.GITHUB_EVENT_NAME;
+        let body: string;
+
+        if (eventName === "issue_comment") {
+            body = github.context.payload.comment?.body as string;
+        } else if (eventName === "pull_request") {
+            body = github.context.payload.pull_request?.body as string;
+        } else if (eventName === "issues") {
+            body = github.context.payload.issue?.body as string;
+        } else {
+            core.setFailed(`Invalid event: ${eventName}`);
+            return;
+        }
+
         const commands = extractCommands(body, config.commands) as Command[];        
-        const octokit = github.getOctokit(inputs.token);
 
         commands.forEach(async (c) => {
             core.info(`Process command: ${JSON.stringify(c)}`);
