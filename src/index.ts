@@ -41,14 +41,18 @@ async function run() {
 
         const eventName = process.env.GITHUB_EVENT_NAME;
         let body: string;
+        let objectNumber: number;
         core.info(`Processing payload for event [${eventName}]: ${JSON.stringify(github.context.payload)}`);
 
         if (eventName === "issue_comment") {
             body = github.context.payload.comment?.body as string;
+            objectNumber = github.context.payload.issue?.number as number;
         } else if (eventName === "pull_request") {
             body = github.context.payload.pull_request?.body as string;
+            objectNumber = github.context.payload.pull_request?.number as number;
         } else if (eventName === "issues") {
             body = github.context.payload.issue?.body as string;
+            objectNumber = github.context.payload.issue?.number as number;
         } else {
             core.setFailed(`Invalid event: ${eventName}`);
             return;
@@ -64,14 +68,14 @@ async function run() {
                 await octokit.issues.addLabels({
                     owner,
                     repo,
-                    issue_number: github.context.payload.issue?.number as number,
+                    issue_number: objectNumber,
                     labels: [c.arg]
                 });
             } else if (c.command === "remove-label") {
                 await octokit.issues.removeLabel({
                     owner,
                     repo,
-                    issue_number: github.context.payload.issue?.number as number,
+                    issue_number: objectNumber,
                     name: c.arg
                 });
             } else {

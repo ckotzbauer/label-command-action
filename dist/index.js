@@ -791,7 +791,7 @@ const core = __importStar(__webpack_require__(470));
 const github = __importStar(__webpack_require__(469));
 const extract_commands_1 = __webpack_require__(185);
 function run() {
-    var _a, _b, _c, _d;
+    var _a, _b, _c, _d, _e, _f, _g;
     return __awaiter(this, void 0, void 0, function* () {
         try {
             const inputs = {
@@ -817,15 +817,19 @@ function run() {
             }
             const eventName = process.env.GITHUB_EVENT_NAME;
             let body;
+            let objectNumber;
             core.info(`Processing payload for event [${eventName}]: ${JSON.stringify(github.context.payload)}`);
             if (eventName === "issue_comment") {
                 body = (_b = github.context.payload.comment) === null || _b === void 0 ? void 0 : _b.body;
+                objectNumber = (_c = github.context.payload.issue) === null || _c === void 0 ? void 0 : _c.number;
             }
             else if (eventName === "pull_request") {
-                body = (_c = github.context.payload.pull_request) === null || _c === void 0 ? void 0 : _c.body;
+                body = (_d = github.context.payload.pull_request) === null || _d === void 0 ? void 0 : _d.body;
+                objectNumber = (_e = github.context.payload.pull_request) === null || _e === void 0 ? void 0 : _e.number;
             }
             else if (eventName === "issues") {
-                body = (_d = github.context.payload.issue) === null || _d === void 0 ? void 0 : _d.body;
+                body = (_f = github.context.payload.issue) === null || _f === void 0 ? void 0 : _f.body;
+                objectNumber = (_g = github.context.payload.issue) === null || _g === void 0 ? void 0 : _g.number;
             }
             else {
                 core.setFailed(`Invalid event: ${eventName}`);
@@ -834,13 +838,12 @@ function run() {
             const commands = extract_commands_1.extractCommands(body, config.commands);
             core.info(`Extracted ${commands.length} commands.`);
             commands.forEach((c) => __awaiter(this, void 0, void 0, function* () {
-                var _e, _f;
                 core.info(`Process command: ${JSON.stringify(c)}`);
                 if (c.command === "add-label") {
                     yield octokit.issues.addLabels({
                         owner,
                         repo,
-                        issue_number: (_e = github.context.payload.issue) === null || _e === void 0 ? void 0 : _e.number,
+                        issue_number: objectNumber,
                         labels: [c.arg]
                     });
                 }
@@ -848,7 +851,7 @@ function run() {
                     yield octokit.issues.removeLabel({
                         owner,
                         repo,
-                        issue_number: (_f = github.context.payload.issue) === null || _f === void 0 ? void 0 : _f.number,
+                        issue_number: objectNumber,
                         name: c.arg
                     });
                 }
