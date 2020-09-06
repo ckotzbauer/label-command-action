@@ -14,7 +14,7 @@ export const extractCommands = (body: string, config: CommandConfig[]): (Command
             const command = match.groups?.command as string;
             const arg = match.groups?.arg as string;
             const matchedCommand = config
-                .find((c) => c.command === command && (c.arg === arg || new RegExp(c.arg).test(arg)));
+                .find((c) => c.command === command && (c.arg === arg || (c.arg !== "" && new RegExp(c.arg).test(arg))));
 
             if (!matchedCommand) {
                 return null;

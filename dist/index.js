@@ -501,7 +501,7 @@ exports.extractCommands = (body, config) => {
         const command = (_a = match.groups) === null || _a === void 0 ? void 0 : _a.command;
         const arg = (_b = match.groups) === null || _b === void 0 ? void 0 : _b.arg;
         const matchedCommand = config
-            .find((c) => c.command === command && (c.arg === arg || new RegExp(c.arg).test(arg)));
+            .find((c) => c.command === command && (c.arg === arg || (c.arg !== "" && new RegExp(c.arg).test(arg))));
         if (!matchedCommand) {
             return null;
         }
@@ -800,7 +800,7 @@ function run() {
             };
             const configUrl = path_1.join(process.env.GITHUB_WORKSPACE, ".github", inputs.configFile || "label-commands.json");
             let config = JSON.parse(fs_1.readFileSync(configUrl).toString());
-            core.info(`Config: ${JSON.stringify(config)}`);
+            core.debug(`Config: ${JSON.stringify(config)}`);
             const allowedUsers = config.allowedUsers || [];
             const octokit = github.getOctokit(inputs.token);
             const repository = process.env.GITHUB_REPOSITORY;
@@ -817,6 +817,7 @@ function run() {
             }
             const eventName = process.env.GITHUB_EVENT_NAME;
             let body;
+            core.debug(`Processing payload for event [${eventName}]: ${JSON.stringify(github.context.payload)}`);
             if (eventName === "issue_comment") {
                 body = (_b = github.context.payload.comment) === null || _b === void 0 ? void 0 : _b.body;
             }
@@ -831,6 +832,7 @@ function run() {
                 return;
             }
             const commands = extract_commands_1.extractCommands(body, config.commands);
+            core.debug(`Extracted ${commands.length} commands.`);
             commands.forEach((c) => __awaiter(this, void 0, void 0, function* () {
                 var _e, _f;
                 core.info(`Process command: ${JSON.stringify(c)}`);

@@ -20,7 +20,7 @@ async function run() {
         );
 
         let config = JSON.parse(readFileSync(configUrl).toString());
-        core.info(`Config: ${JSON.stringify(config)}`);
+        core.debug(`Config: ${JSON.stringify(config)}`);
         const allowedUsers = config.allowedUsers as string[] || [];
 
         const octokit = github.getOctokit(inputs.token);
@@ -41,6 +41,7 @@ async function run() {
 
         const eventName = process.env.GITHUB_EVENT_NAME;
         let body: string;
+        core.debug(`Processing payload for event [${eventName}]: ${JSON.stringify(github.context.payload)}`);
 
         if (eventName === "issue_comment") {
             body = github.context.payload.comment?.body as string;
@@ -53,7 +54,8 @@ async function run() {
             return;
         }
 
-        const commands = extractCommands(body, config.commands) as Command[];        
+        const commands = extractCommands(body, config.commands) as Command[];
+        core.debug(`Extracted ${commands.length} commands.`);
 
         commands.forEach(async (c) => {
             core.info(`Process command: ${JSON.stringify(c)}`);
