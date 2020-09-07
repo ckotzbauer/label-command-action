@@ -1,7 +1,7 @@
 {
-  "name": "find-comment",
+  "name": "label-command-action",
   "version": "1.0.0",
-  "description": "Find an issue or pull request comment",
+  "description": "A GitHub action to label issues or PRs with specified commands",
   "main": "src/index.ts",
   "scripts": {
     "package": "ncc build src/index.ts -o dist",
@@ -9,15 +9,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/peter-evans/find-comment.git"
+    "url": "git+https://github.com/ckotzbauer/label-command-action.git"
   },
   "keywords": [],
-  "author": "Peter Evans",
+  "author": "Christian Kotzbauer",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/peter-evans/find-comment/issues"
+    "url": "https://github.com/ckotzbauer/label-command-action/issues"
   },
-  "homepage": "https://github.com/peter-evans/find-comment#readme",
+  "homepage": "https://github.com/ckotzbauer/label-command-action#readme",
   "dependencies": {
     "@actions/core": "^1.2.4",
     "@actions/github": "^4.0.0"
