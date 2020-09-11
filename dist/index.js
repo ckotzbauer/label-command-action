@@ -806,6 +806,9 @@ function run() {
             const repository = process.env.GITHUB_REPOSITORY;
             const [owner, repo] = repository.split("/");
             if (!allowedUsers.includes(github.context.actor)) {
+                if (github.context.actor.includes("[bot]")) {
+                    return;
+                }
                 core.warning(`${github.context.actor} is not allowed to post a command.`);
                 yield octokit.issues.createComment({
                     owner,

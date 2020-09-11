@@ -28,6 +28,10 @@ async function run() {
         const [owner, repo] = repository.split("/");
 
         if (!allowedUsers.includes(github.context.actor)) {
+            if (github.context.actor.includes("[bot]")) {
+                return;
+            }
+
             core.warning(`${github.context.actor} is not allowed to post a command.`);
             await octokit.issues.createComment({
                 owner,
