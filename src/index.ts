@@ -21,27 +21,6 @@ async function run() {
 
         let config = JSON.parse(readFileSync(configUrl).toString());
         core.info(`Config: ${JSON.stringify(config)}`);
-        const allowedUsers = config.allowedUsers as string[] || [];
-
-        const octokit = github.getOctokit(inputs.token);
-        const repository: string = process.env.GITHUB_REPOSITORY as string;
-        const [owner, repo] = repository.split("/");
-
-        if (!allowedUsers.includes(github.context.actor)) {
-            if (github.context.actor.includes("[bot]")) {
-                return;
-            }
-
-            core.warning(`${github.context.actor} is not allowed to post a command.`);
-            await octokit.issues.createComment({
-                owner,
-                repo,
-                issue_number: github.context.payload.issue?.number as number,
-                body: `@${github.context.actor} You are not allowed to post a command.`
-            });
-
-            return;
-        }
 
         const eventName = process.env.GITHUB_EVENT_NAME;
         let body: string;
@@ -64,6 +43,27 @@ async function run() {
 
         const commands = extractCommands(body, config.commands) as Command[];
         core.info(`Extracted ${commands.length} commands.`);
+
+        const allowedUsers = config.allowedUsers as string[] || [];
+        const octokit = github.getOctokit(inputs.token);
+        const repository: string = process.env.GITHUB_REPOSITORY as string;
+        const [owner, repo] = repository.split("/");
+
+        if (commands.length > 0 && !allowedUsers.includes(github.context.actor)) {
+            if (github.context.actor.includes("[bot]")) {
+                return;
+            }
+
+            core.warning(`${github.context.actor} is not allowed to post a command.`);
+            await octokit.issues.createComment({
+                owner,
+                repo,
+                issue_number: github.context.payload.issue?.number as number,
+                body: `@${github.context.actor} You are not allowed to post a command.`
+            });
+
+            return;
+        }
 
         commands.forEach(async (c) => {
             core.info(`Process command: ${JSON.stringify(c)}`);

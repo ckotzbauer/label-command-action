@@ -801,38 +801,21 @@ function run() {
             const configUrl = path_1.join(process.env.GITHUB_WORKSPACE, ".github", inputs.configFile || "label-commands.json");
             let config = JSON.parse(fs_1.readFileSync(configUrl).toString());
             core.info(`Config: ${JSON.stringify(config)}`);
-            const allowedUsers = config.allowedUsers || [];
-            const octokit = github.getOctokit(inputs.token);
-            const repository = process.env.GITHUB_REPOSITORY;
-            const [owner, repo] = repository.split("/");
-            if (!allowedUsers.includes(github.context.actor)) {
-                if (github.context.actor.includes("[bot]")) {
-                    return;
-                }
-                core.warning(`${github.context.actor} is not allowed to post a command.`);
-                yield octokit.issues.createComment({
-                    owner,
-                    repo,
-                    issue_number: (_a = github.context.payload.issue) === null || _a === void 0 ? void 0 : _a.number,
-                    body: `@${github.context.actor} You are not allowed to post a command.`
-                });
-                return;
-            }
             const eventName = process.env.GITHUB_EVENT_NAME;
             let body;
             let objectNumber;
             core.info(`Processing payload for event [${eventName}]: ${JSON.stringify(github.context.payload)}`);
             if (eventName === "issue_comment") {
-                body = (_b = github.context.payload.comment) === null || _b === void 0 ? void 0 : _b.body;
-                objectNumber = (_c = github.context.payload.issue) === null || _c === void 0 ? void 0 : _c.number;
+                body = (_a = github.context.payload.comment) === null || _a === void 0 ? void 0 : _a.body;
+                objectNumber = (_b = github.context.payload.issue) === null || _b === void 0 ? void 0 : _b.number;
             }
             else if (eventName === "pull_request") {
-                body = (_d = github.context.payload.pull_request) === null || _d === void 0 ? void 0 : _d.body;
-                objectNumber = (_e = github.context.payload.pull_request) === null || _e === void 0 ? void 0 : _e.number;
+                body = (_c = github.context.payload.pull_request) === null || _c === void 0 ? void 0 : _c.body;
+                objectNumber = (_d = github.context.payload.pull_request) === null || _d === void 0 ? void 0 : _d.number;
             }
             else if (eventName === "issues") {
-                body = (_f = github.context.payload.issue) === null || _f === void 0 ? void 0 : _f.body;
-                objectNumber = (_g = github.context.payload.issue) === null || _g === void 0 ? void 0 : _g.number;
+                body = (_e = github.context.payload.issue) === null || _e === void 0 ? void 0 : _e.body;
+                objectNumber = (_f = github.context.payload.issue) === null || _f === void 0 ? void 0 : _f.number;
             }
             else {
                 core.setFailed(`Invalid event: ${eventName}`);
@@ -840,6 +823,23 @@ function run() {
             }
             const commands = extract_commands_1.extractCommands(body, config.commands);
             core.info(`Extracted ${commands.length} commands.`);
+            const allowedUsers = config.allowedUsers || [];
+            const octokit = github.getOctokit(inputs.token);
+            const repository = process.env.GITHUB_REPOSITORY;
+            const [owner, repo] = repository.split("/");
+            if (commands.length > 0 && !allowedUsers.includes(github.context.actor)) {
+                if (github.context.actor.includes("[bot]")) {
+                    return;
+                }
+                core.warning(`${github.context.actor} is not allowed to post a command.`);
+                yield octokit.issues.createComment({
+                    owner,
+                    repo,
+                    issue_number: (_g = github.context.payload.issue) === null || _g === void 0 ? void 0 : _g.number,
+                    body: `@${github.context.actor} You are not allowed to post a command.`
+                });
+                return;
+            }
             commands.forEach((c) => __awaiter(this, void 0, void 0, function* () {
                 core.info(`Process command: ${JSON.stringify(c)}`);
                 if (c.command === "add-label") {
