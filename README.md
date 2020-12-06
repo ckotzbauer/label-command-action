@@ -1,6 +1,7 @@
 # Label Command Action
 
 ![build](https://github.com/ckotzbauer/label-command-action/workflows/build/badge.svg)
+
 A GitHub action to label issues or PRs with specified commands.
 
 ## Usage
