@@ -489,7 +489,7 @@ exports.debug = debug; // for test
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.extractCommands = void 0;
-exports.extractCommands = (body, config) => {
+const extractCommands = (body, config) => {
     const exp = /^\/(?<command>[A-Za-z-]+) ?(?<arg>[A-Za-z-]*)$/;
     return body.split("\r\n")
         .map((line) => {
@@ -509,6 +509,7 @@ exports.extractCommands = (body, config) => {
     })
         .filter((c) => c);
 };
+exports.extractCommands = extractCommands;
 
 
 /***/ }),
