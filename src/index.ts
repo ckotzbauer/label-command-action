@@ -55,7 +55,7 @@ async function run() {
             }
 
             core.warning(`${github.context.actor} is not allowed to post a command.`);
-            await octokit.issues.createComment({
+            await octokit.rest.issues.createComment({
                 owner,
                 repo,
                 issue_number: github.context.payload.issue?.number as number,
@@ -69,14 +69,14 @@ async function run() {
             core.info(`Process command: ${JSON.stringify(c)}`);
 
             if (c.command === "add-label") {
-                await octokit.issues.addLabels({
+                await octokit.rest.issues.addLabels({
                     owner,
                     repo,
                     issue_number: objectNumber,
                     labels: [c.arg]
                 });
             } else if (c.command === "remove-label") {
-                await octokit.issues.removeLabel({
+                await octokit.rest.issues.removeLabel({
                     owner,
                     repo,
                     issue_number: objectNumber,
@@ -88,7 +88,7 @@ async function run() {
             }
 
             if (c.dispatch) {
-                const re = await octokit.repos.createDispatchEvent({
+                const re = await octokit.rest.repos.createDispatchEvent({
                     repo,
                     owner,
                     event_type: c.dispatch
