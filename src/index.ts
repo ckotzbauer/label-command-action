@@ -98,7 +98,8 @@ async function run() {
         });
     } catch (error) {
         core.info(inspect(error));
-        core.setFailed(error.message);
+        const e: Error = error as Error;
+        core.setFailed(e.message);
     }
 }
 
