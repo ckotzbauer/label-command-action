@@ -3,7 +3,7 @@ import { CommandConfig, Command } from "./types";
 export const extractCommands = (body: string, config: CommandConfig[]): (Command | null)[] => {
     const exp = /^\/(?<command>[A-Za-z-]+) ?(?<arg>[A-Za-z-]*)$/;
 
-    return body.split("\r\n")
+    return body?.split("\r\n")
         .map((line) => {
             const match = line.match(exp);
 
@@ -22,5 +22,5 @@ export const extractCommands = (body: string, config: CommandConfig[]): (Command
 
             return { command: matchedCommand.action, arg: matchedCommand.label.replace("$1", arg), dispatch: matchedCommand.dispatch };
         })
-        .filter((c) => c);
+        .filter((c) => c) || [];
 }

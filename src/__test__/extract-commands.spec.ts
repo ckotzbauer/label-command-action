@@ -83,4 +83,11 @@ describe("extract-commands", () => {
         const extracted = extractCommands(body, config.commands);
         expect(extracted).toStrictEqual([{ command: "add-label", arg: "hold", dispatch: undefined }]);
     });
+
+    it("should handle null value", () => {
+        const body = null as unknown as string;
+
+        const extracted = extractCommands(body, config.commands);
+        expect(extracted).toStrictEqual([]);
+    });
 });
