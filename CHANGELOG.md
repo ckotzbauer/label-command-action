@@ -1,3 +1,51 @@
+## Version 1.1.1 (2021-12-14)
+
+### Build and testing
+
+* [[`979cb158`](https://github.com/ckotzbauer&#x2F;label-command-action/commit/979cb158)] - **build**: update npm lockfileVersion
+* [[`5b9fcbbc`](https://github.com/ckotzbauer&#x2F;label-command-action/commit/5b9fcbbc)] - **build**: update to node@16
+* [[`30e4e6b4`](https://github.com/ckotzbauer&#x2F;label-command-action/commit/30e4e6b4)] - **build**: update to node@16
+
+### Dependency updates
+
+* [[`3a49e75e`](https://github.com/ckotzbauer&#x2F;label-command-action/commit/3a49e75e)] - **deps**: update dependency ts-jest to v27.1.1
+* [[`04324082`](https://github.com/ckotzbauer&#x2F;label-command-action/commit/04324082)] - **deps**: update dependency @types&#x2F;node to v16.11.12 (#135)
+* [[`d3ac8320`](https://github.com/ckotzbauer&#x2F;label-command-action/commit/d3ac8320)] - **deps**: update dependency jest to v27.4.4 (#136)
+* [[`47c8d0ff`](https://github.com/ckotzbauer&#x2F;label-command-action/commit/47c8d0ff)] - **deps**: update dependency typescript to v4.5.3 (#138)
+* [[`a3830e5e`](https://github.com/ckotzbauer&#x2F;label-command-action/commit/a3830e5e)] - **deps**: update dependency ts-jest to v27.1.0 (#133)
+* [[`7062753f`](https://github.com/ckotzbauer&#x2F;label-command-action/commit/7062753f)] - **deps**: update dependency @types&#x2F;node to v16.11.11 (#131)
+* [[`69cb941f`](https://github.com/ckotzbauer&#x2F;label-command-action/commit/69cb941f)] - **deps**: update dependency jest to v27.4.3 (#132)
+* [[`b07a1f84`](https://github.com/ckotzbauer&#x2F;label-command-action/commit/b07a1f84)] - **deps**: bump actions&#x2F;setup-node from 2.4.1 to 2.5.0
+* [[`8229bee4`](https://github.com/ckotzbauer&#x2F;label-command-action/commit/8229bee4)] - **deps**: update dependency @types&#x2F;node to v16.11.10 (#129)
+* [[`eab6da6d`](https://github.com/ckotzbauer&#x2F;label-command-action/commit/eab6da6d)] - **deps**: update dependency @types&#x2F;jest to v27.0.3 (#126)
+* [[`33803c62`](https://github.com/ckotzbauer&#x2F;label-command-action/commit/33803c62)] - **deps**: update dependency @types&#x2F;node to v16.11.9 (#127)
+* [[`fa5267c2`](https://github.com/ckotzbauer&#x2F;label-command-action/commit/fa5267c2)] - **deps**: update dependency typescript to v4.5.2 (#128)
+* [[`7e935dfe`](https://github.com/ckotzbauer&#x2F;label-command-action/commit/7e935dfe)] - **deps**: update dependency @types&#x2F;node to v16.11.7 (#125)
+* [[`2f809a2c`](https://github.com/ckotzbauer&#x2F;label-command-action/commit/2f809a2c)] - **deps**: update dependency @types&#x2F;node to v16
+* [[`d9802b1a`](https://github.com/ckotzbauer&#x2F;label-command-action/commit/d9802b1a)] - **deps**: update dependency @types&#x2F;node to v14.17.32 (#123)
+* [[`9522b946`](https://github.com/ckotzbauer&#x2F;label-command-action/commit/9522b946)] - **deps**: update dependency @types&#x2F;node to v14.17.29 (#121)
+* [[`f20361f9`](https://github.com/ckotzbauer&#x2F;label-command-action/commit/f20361f9)] - **deps**: update dependency jest to v27.3.1 (#122)
+* [[`c5a27516`](https://github.com/ckotzbauer&#x2F;label-command-action/commit/c5a27516)] - **deps**: update dependency ts-jest to v27.0.7 (#120)
+* [[`d41c57b9`](https://github.com/ckotzbauer&#x2F;label-command-action/commit/d41c57b9)] - **deps**: update dependency ts-jest to v27.0.6 (#118)
+* [[`b26873e3`](https://github.com/ckotzbauer&#x2F;label-command-action/commit/b26873e3)] - **deps**: update dependency @types&#x2F;node to v14.17.27 (#117)
+* [[`4b6ce5a6`](https://github.com/ckotzbauer&#x2F;label-command-action/commit/4b6ce5a6)] - **deps**: update dependency typescript to v4.4.4 (#119)
+* [[`673cb3fe`](https://github.com/ckotzbauer&#x2F;label-command-action/commit/673cb3fe)] - **deps**: update dependency @types&#x2F;node to v14.17.21 (#115)
+* [[`a17d3ee9`](https://github.com/ckotzbauer&#x2F;label-command-action/commit/a17d3ee9)] - **deps**: update dependency jest to v27.2.5 (#116)
+* [[`20c80dde`](https://github.com/ckotzbauer&#x2F;label-command-action/commit/20c80dde)] - **deps**: update dependency @types&#x2F;node to v14.17.20 (#112)
+* [[`aa8e4b33`](https://github.com/ckotzbauer&#x2F;label-command-action/commit/aa8e4b33)] - **deps**: update dependency jest to v27.2.4 (#113)
+* [[`c98e1a6a`](https://github.com/ckotzbauer&#x2F;label-command-action/commit/c98e1a6a)] - **deps**: update dependency @actions&#x2F;core to v1.6.0 (#114)
+* [[`67c195e3`](https://github.com/ckotzbauer&#x2F;label-command-action/commit/67c195e3)] - **deps**: bump actions&#x2F;setup-node from 2.4.0 to 2.4.1
+
+### Common changes
+
+* [[`01d28694`](https://github.com/ckotzbauer&#x2F;label-command-action/commit/01d28694)] - **chore**: fix typerror close #134
+* [[`7b921abb`](https://github.com/ckotzbauer&#x2F;label-command-action/commit/7b921abb)] - **chore**: Merge pull request #137 from ckotzbauer&#x2F;renovate&#x2F;ts-jest-27.x
+* [[`2b2a237d`](https://github.com/ckotzbauer&#x2F;label-command-action/commit/2b2a237d)] - **chore**: use other pull_request_target trigger
+* [[`82e70c3f`](https://github.com/ckotzbauer&#x2F;label-command-action/commit/82e70c3f)] - **chore**: Merge pull request #130 from ckotzbauer&#x2F;dependabot&#x2F;github_actions&#x2F;actions&#x2F;setup-node-2.5.0
+* [[`e1969772`](https://github.com/ckotzbauer&#x2F;label-command-action/commit/e1969772)] - **chore**: Merge pull request #124 from ckotzbauer&#x2F;renovate&#x2F;node-16.x
+* [[`48051d53`](https://github.com/ckotzbauer&#x2F;label-command-action/commit/48051d53)] - **chore**: Merge pull request #111 from ckotzbauer&#x2F;dependabot&#x2F;github_actions&#x2F;actions&#x2F;setup-node-2.4.1
+
+
 ## Version 1.1.0 (2021-05-15)
 
 ### Bug fixes
