@@ -27,7 +27,7 @@
     "@types/node": "16.11.14",
     "@zeit/ncc": "0.22.3",
     "jest": "27.4.5",
-    "ts-jest": "27.1.1",
+    "ts-jest": "27.1.2",
     "typescript": "4.5.4"
   }
 }
