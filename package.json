@@ -20,7 +20,7 @@
   "homepage": "https://github.com/ckotzbauer/label-command-action#readme",
   "dependencies": {
     "@actions/core": "1.8.2",
-    "@actions/github": "5.0.1"
+    "@actions/github": "5.0.3"
   },
   "devDependencies": {
     "@jest/types": "28.1.0",
