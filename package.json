@@ -28,6 +28,6 @@
     "@zeit/ncc": "0.22.3",
     "jest": "29.5.0",
     "ts-jest": "29.0.5",
-    "typescript": "5.0.2"
+    "typescript": "5.0.3"
   }
 }
